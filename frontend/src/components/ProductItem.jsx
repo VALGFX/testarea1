@@ -1,15 +1,29 @@
 import { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ShopContext } from '../context/ShopContext'
 
 const ProductItem = ({ id, image, name, price }) => {
 	const { currency, isLoggedIn } = useContext(ShopContext)
+	const navigate = useNavigate()
+
+	const handleClick = () => {
+		if (isLoggedIn) {
+			// Dacă e logat, du-te pe pagina produsului
+			navigate(`/product/${id}`)
+			window.scrollTo(0, 0)
+		} else {
+			// Dacă nu e logat, du-te pe pagina de login
+			navigate('/login')
+		}
+	}
 
 	return (
-		<Link
-			to={`/product/${id}`}
-			onClick={() => scrollTo(0, 0)}
+		<div
+			onClick={handleClick}
 			className='group relative bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-200 cursor-pointer max-w-sm mx-auto block'
+			role="button"
+			tabIndex={0}
+			onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleClick() }}
 		>
 			<div className='w-full aspect-[1/1] overflow-hidden rounded-t-2xl bg-gray-50 relative'>
 				<img
@@ -30,7 +44,7 @@ const ProductItem = ({ id, image, name, price }) => {
 					<p className='text-sm font-medium text-gray-400 italic'>Login to see the price</p>
 				)}
 			</div>
-		</Link>
+		</div>
 	)
 }
 
