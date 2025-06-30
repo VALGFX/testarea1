@@ -142,7 +142,7 @@ const Add = ({ token }) => {
 						<option value='Specials'>Specials</option>
 						<option value='Lavarock'>Plants on lavarock</option>
 						<option value='Chladophlora'>Chladophlora</option>
-						<option value='vitro'>In vitro plants in 100cc cup</option>
+						<option value='Mosses'>Mosses in cup 80cc</option>
 						<option value='vitro'>In vitro plants in 100cc cup</option>
 						<option value='Aquariumplants'>Aquariumplants (bunch with lead)</option>
 						<option value='Aquariumplanten'>Aquariumplanten in Terra Cotta pot</option>
