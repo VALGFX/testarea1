@@ -137,8 +137,32 @@ const Add = ({ token }) => {
 						onChange={e => setCategory(e.target.value)}
 						className='w-full border border-gray-300 rounded-md px-4 py-2'
 					>
-						<option value='Acquario'>Acquario</option>
-						<option value='Stagni'>Stagni</option>
+						<option value='Aquatic'>Aquatic plants</option>
+						<option value='Driftwood'>Plants on driftwood</option>
+						<option value='Specials'>Specials</option>
+						<option value='Lavarock'>Plants on lavarock</option>
+						<option value='Chladophlora'>Chladophlora</option>
+						<option value='vitro'>In vitro plants in 100cc cup</option>
+						<option value='vitro'>In vitro plants in 100cc cup</option>
+						<option value='Aquariumplants'>Aquariumplants (bunch with lead)</option>
+						<option value='Aquariumplanten'>Aquariumplanten in Terra Cotta pot</option>
+						<option value='Steel'>Plants on steel net </option>
+						<option value='mat'>Plants on mat 40x60 cm</option>
+						<option value='mat'>Aquatic plants in 5 cm pot</option>
+						<option value='mat'>Terrarium</option>
+						<option value='mat'>Aquatic plants in 9 cm pot</option>
+						<option value='mat'>Anubias  P9</option>
+						<option value='mat'>Cryptocoryne  P9</option>
+						<option value='mat'>Plants on mat 40x60 cm</option>
+						<option value='mat'>Echinodorus P9</option>
+						<option value='mat'>Microsorum  p9</option>
+						<option value='mat'>Assorted plants p5</option>
+						<option value='mat'>Packages of 20 plants</option>
+						<option value='mat'>Floating plants loose</option>
+						<option value='mat'>Floating plants in cup</option>
+						<option value='mat'>Oxygen plants in cup</option>
+						<option value='mat'>Oxygen bundle plants</option>
+						<option value='mat'>Nice to have</option>
 					</select>
 				</div>
 
