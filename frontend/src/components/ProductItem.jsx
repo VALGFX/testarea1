@@ -15,7 +15,7 @@ const ProductItem = ({ id, image, name, price }) => {
 				<img
 					src={image && image.length > 0 ? image[0] : '/images/default.jpg'}
 					alt={name}
-					className='w-[100%] h-auto object-contain transition-transform duration-300 group-hover:scale-105'
+					className='w-[100%] h-full object-contain transition-transform duration-300 group-hover:scale-105'
 				/>
 			</div>
 			<div className='p-4 flex flex-col gap-2'>
