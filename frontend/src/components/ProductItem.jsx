@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+ import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { ShopContext } from '../context/ShopContext'
 
@@ -19,7 +19,7 @@ const ProductItem = ({ id, image, name, price }) => {
 				/>
 			</div>
 			<div className='p-4 flex flex-col gap-2'>
-				<h3 className='text-lg font-semibold text-gray-800 truncate'>{name}</h3>
+				<h3 className='text-lg font-semibold text-gray-800 break-words whitespace-normal'>{name}</h3>
 				<p className='text-sm font-medium text-gray-600'>
 					{currency}
 					{price.toFixed(2)}
