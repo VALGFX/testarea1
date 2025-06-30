@@ -137,32 +137,31 @@ const Add = ({ token }) => {
 						onChange={e => setCategory(e.target.value)}
 						className='w-full border border-gray-300 rounded-md px-4 py-2'
 					>
-						<option value='Aquatic'>Aquatic plants</option>
-						<option value='Driftwood'>Plants on driftwood</option>
-						<option value='Specials'>Specials</option>
-						<option value='Lavarock'>Plants on lavarock</option>
-						<option value='Chladophlora'>Chladophlora</option>
-						<option value='Mosses'>Mosses in cup 80cc</option>
-						<option value='vitro'>In vitro plants in 100cc cup</option>
-						<option value='Aquariumplants'>Aquariumplants (bunch with lead)</option>
-						<option value='Aquariumplanten'>Aquariumplanten in Terra Cotta pot</option>
-						<option value='Steel'>Plants on steel net </option>
-						<option value='mat'>Plants on mat 40x60 cm</option>
-						<option value='5'>Aquatic plants in 5 cm pot</option>
-						<option value='Terrarium'>Terrarium</option>
-						<option value='Aquatic'>Aquatic plants in 9 cm pot</option>
-						<option value='Anubias'>Anubias  P9</option>
-						<option value='Cryptocoryne'>Cryptocoryne  P9</option>
-						<option value='40x60'>Plants on mat 40x60 cm</option>
-						<option value='Echinodorus'>Echinodorus P9</option>
-						<option value='Microsorum'>Microsorum  p9</option>
-						<option value='Assorted'>Assorted plants p5</option>
-						<option value='20'>Packages of 20 plants</option>
-						<option value='loose'>Floating plants loose</option>
-						<option value='cup'>Floating plants in cup</option>
-						<option value='Oxygen'>Oxygen plants in cup</option>
-						<option value='bundle'>Oxygen bundle plants</option>
-						<option value='Nice'>Nice to have</option>
+						<option value='LOS'>Aquatic plants (loose) </option>
+						<option value='HOUT'>Plants on driftwood</option>
+						<option value='SPECIAL'>Specials</option>
+						<option value='MOS'>Mosses in cup 80cc</option>
+						<option value='LAVA'>Plants on lavarock</option>
+						<option value='MOSBAL'>Chladophlora (mosbal)</option>
+						<option value='VITRO'>In vitro plants in 100cc cup</option>
+						<option value='BUNCH'>Aquariumplants (bunch with lead)</option>
+						<option value='TC_POT'>Aquariumplanten in Terra Cotta pot</option>
+						<option value='NET'>Plants on steel net </option>
+						<option value='MAT'>Plants on mat 40x60 cm</option>
+						<option value='5_cm'>Aquatic plants in 5 cm pot</option>
+						<option value='TERRARIUM'>Terrarium</option>
+						<option value='9_cm'>Aquatic plants in 9 cm pot</option>
+						<option value='9_cm'>Anubias  P9</option>
+						<option value='9_cm'>Cryptocoryne  P9</option>
+						<option value='9_cm'>Echinodorus P9</option>
+						<option value='9_cm'>Microsorum  p9</option>
+						<option value='ASSORTI'>Assorted plants p5</option>
+						<option value='ASSORTI'>Packages of 20 plants</option>
+						<option value='POND'>Floating plants loose</option>
+						<option value='POND'>Floating plants in cup</option>
+						<option value='POND'>Oxygen plants in cup</option>
+						<option value='POND'>Oxygen bundle plants</option>
+						<option value='OVERIG'>Nice to have</option>
 					</select>
 				</div>
 
