@@ -5,7 +5,7 @@ import connectCloudinary from './config/cloudinary.js'
 import connectDB from './config/mongodb.js'
 
 // Routes
-import adminRouter from './routes/adminRoutes.js' // ✅ nou adăugat
+import adminRouter from './routes/adminRoutes.js'
 import cartRouter from './routes/cartRoute.js'
 import orderRouter from './routes/orderRoute.js'
 import productRouter from './routes/productRoute.js'
@@ -19,7 +19,7 @@ const port = process.env.PORT || 4000
 connectDB()
 connectCloudinary()
 
-// Middleware
+// Middleware - FOARTE IMPORTANT
 app.use(express.json())
 app.use(cors())
 
@@ -28,7 +28,7 @@ app.use('/api/user', userRouter)
 app.use('/api/product', productRouter)
 app.use('/api/cart', cartRouter)
 app.use('/api/order', orderRouter)
-app.use('/api/admin', adminRouter) // ✅ nou endpoint
+app.use('/api/admin', adminRouter)
 
 // Default route
 app.get('/', (req, res) => {
