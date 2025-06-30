@@ -154,26 +154,30 @@ const Navbar = () => {
 				</div>
 
 				{/* Cart */}
-				<Link to='/cart' style={{ position: 'relative' }}>
-					<img src={assets.cart_icon} alt='Cart' style={{ width: '20px' }} />
-					<span
-						style={{
-							position: 'absolute',
-							right: '-5px',
-							bottom: '-5px',
-							width: '16px',
-							height: '16px',
-							fontSize: '10px',
-							lineHeight: '16px',
-							textAlign: 'center',
-							backgroundColor: '#000',
-							color: '#fff',
-							borderRadius: '50%',
-						}}
-					>
-						{getCartCount()}
-					</span>
-				</Link>
+				{/* Cart */}
+<Link to='/cart' style={{ position: 'relative' }}>
+	<img src={assets.cart_icon} alt='Cart' style={{ width: '20px' }} />
+	{getCartCount() > 0 && (
+		<span
+			style={{
+				position: 'absolute',
+				right: '-5px',
+				bottom: '-5px',
+				width: '16px',
+				height: '16px',
+				fontSize: '10px',
+				lineHeight: '16px',
+				textAlign: 'center',
+				backgroundColor: '#000',
+				color: '#fff',
+				borderRadius: '50%',
+			}}
+		>
+			{getCartCount()}
+		</span>
+	)}
+</Link>
+
 
 				{/* Mobile menu toggle */}
 				<img
