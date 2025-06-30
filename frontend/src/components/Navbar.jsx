@@ -25,9 +25,9 @@ const Navbar = () => {
 
 	const navItems = [
 		{ name: 'Home', path: '/' },
-		{ name: 'Collection', path: '/collection' },
-		{ name: 'About', path: '/about' },
-		{ name: 'Contact', path: '/contact' },
+		{ name: 'Prodotti', path: '/collection' },
+		{ name: 'Chi siamo', path: '/about' },
+		{ name: 'Contatto', path: '/contact' },
 	]
 
 	return (
