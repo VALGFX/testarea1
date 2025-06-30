@@ -11,66 +11,68 @@ const ShopContextProvider = props => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL
 	const [search, setSearch] = useState('')
 	const [showSearch, setShowSearch] = useState(false)
-	const [cartItems, setCartItems] = useState({})
 	const [products, setProducts] = useState([])
-	const [token, setToken] = useState('')
+	const [token, setToken] = useState(localStorage.getItem('token') || '')
+	const [cartItems, setCartItems] = useState(() => {
+		const stored = localStorage.getItem('cartItems')
+		return stored ? JSON.parse(stored) : {}
+	})
 	const navigate = useNavigate()
 
+	// Salvează automat în localStorage
+	useEffect(() => {
+		localStorage.setItem('cartItems', JSON.stringify(cartItems))
+	}, [cartItems])
+
+	// Adaugă în coș
 	const addToCart = async itemId => {
-		let cartData = { ...cartItems }
-
-		// Dacă produsul există deja, adună +1
-		if (cartData[itemId]) {
-			cartData[itemId] += 1
-		} else {
-			cartData[itemId] = 1
+		const updatedCart = {
+			...cartItems,
+			[itemId]: (cartItems[itemId] || 0) + 1,
 		}
+		setCartItems(updatedCart)
 
-		setCartItems(cartData)
-
-		// Trimite și în backend, dacă ești autentificat
 		if (token) {
 			try {
 				await axios.post(
 					backendUrl + '/api/cart/add',
-					{ itemId }, // fără size
+					{ itemId },
 					{ headers: { token } }
 				)
 			} catch (error) {
 				console.error(error)
-				toast.error(
-					error.response?.data?.message || 'Eroare la actualizarea coșului'
-				)
+				toast.error(error.response?.data?.message || 'Eroare la coș')
 			}
 		}
 	}
 
+	// Total produse în coș
 	const getCartCount = () => {
-		let totalCount = 0
-		for (const items in cartItems) {
-			for (const item in cartItems[items]) {
-				try {
-					if (cartItems[items][item] > 0) {
-						totalCount += cartItems[items][item]
-					}
-				} catch (error) {}
-			}
-		}
-		return totalCount
+		return Object.values(cartItems).reduce((acc, qty) => acc + qty, 0)
 	}
 
-	const updateQuantity = async (itemId, size, quantity) => {
-		let cartData = structuredClone(cartItems)
+	// Total preț produse în coș
+	const getCartAmount = () => {
+		let total = 0
+		for (const itemId in cartItems) {
+			const product = products.find(p => p._id === itemId)
+			if (product) {
+				total += product.price * cartItems[itemId]
+			}
+		}
+		return total
+	}
 
-		cartData[itemId][size] = quantity
-
-		setCartItems(cartData)
+	// Modifică cantitatea
+	const updateQuantity = async (itemId, quantity) => {
+		const updated = { ...cartItems, [itemId]: quantity }
+		setCartItems(updated)
 
 		if (token) {
 			try {
 				await axios.post(
 					backendUrl + '/api/cart/update',
-					{ itemId, size, quantity },
+					{ itemId, quantity },
 					{ headers: { token } }
 				)
 			} catch (error) {
@@ -80,21 +82,7 @@ const ShopContextProvider = props => {
 		}
 	}
 
-	const getCartAmount = () => {
-		let totalAmount = 0
-		for (const items in cartItems) {
-			let itemInfo = products.find(product => product._id === items)
-			for (const item in cartItems[items]) {
-				try {
-					if (cartItems[items][item] > 0) {
-						totalAmount += itemInfo.price * cartItems[items][item]
-					}
-				} catch (error) {}
-			}
-		}
-		return totalAmount
-	}
-
+	// Preia lista de produse
 	const getProductsData = async () => {
 		try {
 			const response = await axios.get(backendUrl + '/api/product/list')
@@ -109,6 +97,7 @@ const ShopContextProvider = props => {
 		}
 	}
 
+	// Preia coșul din backend
 	const getUserCart = async token => {
 		try {
 			const response = await axios.post(
@@ -125,15 +114,12 @@ const ShopContextProvider = props => {
 		}
 	}
 
+	// La prima încărcare: produse + token
 	useEffect(() => {
 		getProductsData()
 	}, [])
 
 	useEffect(() => {
-		if (!token && localStorage.getItem('token')) {
-			setToken(localStorage.getItem('token'))
-			getUserCart(localStorage.getItem('token'))
-		}
 		if (token) {
 			getUserCart(token)
 		}
@@ -148,20 +134,21 @@ const ShopContextProvider = props => {
 		showSearch,
 		setShowSearch,
 		cartItems,
-		addToCart,
 		setCartItems,
-		getCartCount,
+		addToCart,
 		updateQuantity,
+		getCartCount,
 		getCartAmount,
 		navigate,
 		backendUrl,
 		setToken,
 		token,
-		isLoggedIn: !!token,
 	}
 
 	return (
-		<ShopContext.Provider value={value}>{props.children}</ShopContext.Provider>
+		<ShopContext.Provider value={value}>
+			{props.children}
+		</ShopContext.Provider>
 	)
 }
 
