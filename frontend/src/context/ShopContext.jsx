@@ -157,6 +157,7 @@ const ShopContextProvider = props => {
 		backendUrl,
 		setToken,
 		token,
+		isLoggedIn: !!token,
 	}
 
 	return (
