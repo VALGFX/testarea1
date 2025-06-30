@@ -11,7 +11,7 @@ const ProductItem = ({ id, image, name, price }) => {
 			onClick={() => scrollTo(0, 0)}
 			className='group relative bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-200 cursor-pointer max-w-sm mx-auto block'
 		>
-			<div className='w-full aspect-[4/3] overflow-hidden rounded-t-2xl bg-gray-50 relative'>
+			<div className='w-full aspect-[1/1] overflow-hidden rounded-t-2xl bg-gray-50 relative'>
 	<img
 		src={image && image.length > 0 ? image[0] : '/images/default.jpg'}
 		alt={name}
