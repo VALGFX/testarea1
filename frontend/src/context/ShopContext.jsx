@@ -5,164 +5,201 @@ import { toast } from 'react-toastify'
 
 export const ShopContext = createContext()
 
-const ShopContextProvider = props => {
-	const currency = '$'
-	const delivery_fee = 10
-	const backendUrl = import.meta.env.VITE_BACKEND_URL
-	const [search, setSearch] = useState('')
-	const [showSearch, setShowSearch] = useState(false)
-	const [cartItems, setCartItems] = useState({})
-	const [products, setProducts] = useState([])
-	const [token, setToken] = useState('')
-	const navigate = useNavigate()
+const ShopContextProvider = (props) => {
+    const currency = '$'
+    const delivery_fee = 10
+    const backendUrl = import.meta.env.VITE_BACKEND_URL
 
-	const addToCart = async itemId => {
-		let cartData = { ...cartItems }
+    // 🔑 Starea utilizatorului
+    const [token, setToken] = useState(localStorage.getItem('token') || '')
 
-		// Dacă produsul există deja, adună +1
-		if (cartData[itemId]) {
-			cartData[itemId] += 1
-		} else {
-			cartData[itemId] = 1
-		}
+    // 🛒 Coșul de cumpărături
+    const [cartItems, setCartItems] = useState(() => {
+        const savedCart = localStorage.getItem('cartItems')
+        return savedCart ? JSON.parse(savedCart) : {}
+    })
 
-		setCartItems(cartData)
+    // 🔍 Căutare
+    const [search, setSearch] = useState('')
+    const [showSearch, setShowSearch] = useState(false)
 
-		// Trimite și în backend, dacă ești autentificat
-		if (token) {
-			try {
-				await axios.post(
-					backendUrl + '/api/cart/add',
-					{ itemId }, // fără size
-					{ headers: { token } }
-				)
-			} catch (error) {
-				console.error(error)
-				toast.error(
-					error.response?.data?.message || 'Eroare la actualizarea coșului'
-				)
-			}
-		}
-	}
+    // 📦 Produse
+    const [products, setProducts] = useState([])
 
-	const getCartCount = () => {
-		let totalCount = 0
-		for (const items in cartItems) {
-			for (const item in cartItems[items]) {
-				try {
-					if (cartItems[items][item] > 0) {
-						totalCount += cartItems[items][item]
-					}
-				} catch (error) {}
-			}
-		}
-		return totalCount
-	}
+    const navigate = useNavigate()
 
-	const updateQuantity = async (itemId, size, quantity) => {
-		let cartData = structuredClone(cartItems)
+    // 🔁 Salvăm coșul în localStorage la fiecare schimbare
+    useEffect(() => {
+        localStorage.setItem('cartItems', JSON.stringify(cartItems))
+    }, [cartItems])
 
-		cartData[itemId][size] = quantity
+    // 🔐 Obținem datele coșului de la server dacă suntem logați
+    useEffect(() => {
+        if (token) {
+            getUserCart(token)
+        }
+    }, [token])
 
-		setCartItems(cartData)
+    // 🔄 La mount, preluăm toate produsele
+    useEffect(() => {
+        getProductsData()
+    }, [])
 
-		if (token) {
-			try {
-				await axios.post(
-					backendUrl + '/api/cart/update',
-					{ itemId, size, quantity },
-					{ headers: { token } }
-				)
-			} catch (error) {
-				console.log(error)
-				toast.error(error.message)
-			}
-		}
-	}
+    // 🔗 Funcția care sincronizează coșul local (anonim) cu cel de pe server
+    const syncCartWithServer = async (newToken) => {
+        try {
+            await axios.post(
+                backendUrl + '/api/cart/sync',
+                { cartData: cartItems },
+                { headers: { token: newToken } }
+            )
+            toast.success('Coșul tău a fost sincronizat cu contul!')
+            getUserCart(newToken) // Reîncărcăm coșul din server
+        } catch (error) {
+            console.error('Eroare la sincronizarea coșului:', error)
+            toast.error('Nu s-a putut sincroniza coșul. Încearcă din nou.')
+        }
+    }
 
-	const getCartAmount = () => {
-		let totalAmount = 0
-		for (const items in cartItems) {
-			let itemInfo = products.find(product => product._id === items)
-			for (const item in cartItems[items]) {
-				try {
-					if (cartItems[items][item] > 0) {
-						totalAmount += itemInfo.price * cartItems[items][item]
-					}
-				} catch (error) {}
-			}
-		}
-		return totalAmount
-	}
+    // 🛒 Adaugă un produs în coș
+    const addToCart = async (itemId) => {
+        let cartData = { ...cartItems }
 
-	const getProductsData = async () => {
-		try {
-			const response = await axios.get(backendUrl + '/api/product/list')
-			if (response.data.success) {
-				setProducts(response.data.products.reverse())
-			} else {
-				toast.error(response.data.message)
-			}
-		} catch (error) {
-			console.log(error)
-			toast.error(error.message)
-		}
-	}
+        if (cartData[itemId]) {
+            cartData[itemId] += 1
+        } else {
+            cartData[itemId] = 1
+        }
 
-	const getUserCart = async token => {
-		try {
-			const response = await axios.post(
-				backendUrl + '/api/cart/get',
-				{},
-				{ headers: { token } }
-			)
-			if (response.data.success) {
-				setCartItems(response.data.cartData)
-			}
-		} catch (error) {
-			console.log(error)
-			toast.error(error.message)
-		}
-	}
+        setCartItems(cartData)
 
-	useEffect(() => {
-		getProductsData()
-	}, [])
+        if (token) {
+            try {
+                await axios.post(
+                    backendUrl + '/api/cart/add',
+                    { itemId },
+                    { headers: { token } }
+                )
+            } catch (error) {
+                console.error(error)
+                toast.error(error.response?.data?.message || 'Eroare la adăugarea în coș')
+            }
+        }
+    }
 
-	useEffect(() => {
-		if (!token && localStorage.getItem('token')) {
-			setToken(localStorage.getItem('token'))
-			getUserCart(localStorage.getItem('token'))
-		}
-		if (token) {
-			getUserCart(token)
-		}
-	}, [token])
+    // 🧮 Numără totalul produselor din coș
+    const getCartCount = () => {
+        return Object.values(cartItems).reduce((sum, quantity) => sum + quantity, 0)
+    }
 
-	const value = {
-		products,
-		currency,
-		delivery_fee,
-		search,
-		setSearch,
-		showSearch,
-		setShowSearch,
-		cartItems,
-		addToCart,
-		setCartItems,
-		getCartCount,
-		updateQuantity,
-		getCartAmount,
-		navigate,
-		backendUrl,
-		setToken,
-		token,
-		isLoggedIn: !!token,
-	}
+    // 💰 Calculează suma totală a coșului
+    const getCartAmount = () => {
+        let totalAmount = 0
+        for (const itemId in cartItems) {
+            const product = products.find(p => p._id === itemId)
+            if (product && cartItems[itemId] > 0) {
+                totalAmount += product.price * cartItems[itemId]
+            }
+        }
+        return totalAmount
+    }
 
-	return (
-		<ShopContext.Provider value={value}>{props.children}</ShopContext.Provider>
-	)
+    // 🔄 Actualizează cantitatea unui produs (dacă există variante - ex: dimensiune)
+    const updateQuantity = async (itemId, size, quantity) => {
+        let cartData = structuredClone(cartItems)
+        if (!cartData[itemId]) cartData[itemId] = {}
+
+        cartData[itemId][size] = quantity
+        setCartItems(cartData)
+
+        if (token) {
+            try {
+                await axios.post(
+                    backendUrl + '/api/cart/update',
+                    { itemId, size, quantity },
+                    { headers: { token } }
+                )
+            } catch (error) {
+                console.log(error)
+                toast.error('Eroare la actualizarea cantității')
+            }
+        }
+    }
+
+    // 📦 Preia produsele de la backend
+    const getProductsData = async () => {
+        try {
+            const response = await axios.get(backendUrl + '/api/product/list')
+            if (response.data.success) {
+                setProducts(response.data.products.reverse())
+            } else {
+                toast.error(response.data.message)
+            }
+        } catch (error) {
+            toast.error('Eroare la încărcarea produselor')
+        }
+    }
+
+    // 🧾 Preia coșul de pe server pentru userul autentificat
+    const getUserCart = async (userToken) => {
+        try {
+            const response = await axios.post(
+                backendUrl + '/api/cart/get',
+                {},
+                { headers: { token: userToken } }
+            )
+            if (response.data.success) {
+                setCartItems(response.data.cartData)
+            }
+        } catch (error) {
+            toast.error('Eroare la preluarea coșului')
+        }
+    }
+
+    // 👤 Setează token-ul și sincronizează coșul local dacă e cazul
+    const handleSetToken = (newToken) => {
+        localStorage.setItem('token', newToken)
+        setToken(newToken)
+
+        if (Object.keys(cartItems).length > 0) {
+            syncCartWithServer(newToken)
+        }
+    }
+
+    // 🔽 Curăță coșul local și din localStorage
+    const clearCart = () => {
+        setCartItems({})
+        localStorage.removeItem('cartItems')
+    }
+
+    // Valoarea oferită contextului
+    const value = {
+        products,
+        currency,
+        delivery_fee,
+        search,
+        setSearch,
+        showSearch,
+        setShowSearch,
+        cartItems,
+        addToCart,
+        setCartItems,
+        getCartCount,
+        updateQuantity,
+        getCartAmount,
+        navigate,
+        backendUrl,
+        token,
+        setToken: handleSetToken, // Folosim funcția personalizată
+        isLoggedIn: !!token,
+        clearCart,
+    }
+
+    return (
+        <ShopContext.Provider value={value}>
+            {props.children}
+        </ShopContext.Provider>
+    )
 }
 
 export default ShopContextProvider
