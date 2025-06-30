@@ -7,14 +7,9 @@ const ProductItem = ({ id, image, name, price }) => {
 	const navigate = useNavigate()
 
 	const handleClick = () => {
-		if (isLoggedIn) {
-			// Dacă e logat, du-te pe pagina produsului
-			navigate(`/product/${id}`)
-			window.scrollTo(0, 0)
-		} else {
-			// Dacă nu e logat, du-te pe pagina de login
-			navigate('/login')
-		}
+		// Navigăm întotdeauna la pagina produsului, fără condiții
+		navigate(`/product/${id}`)
+		window.scrollTo(0, 0)
 	}
 
 	return (
