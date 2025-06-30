@@ -109,7 +109,7 @@ const Collection = () => {
 							Categorie
 						</h3>
 						<div className='flex flex-col gap-3 text-gray-700 font-medium text-sm'>
-							{['Aquatic', 'Driftwood','Specials', 'Lavarock','Chladophlora','vitro','Aquariumplants'].map(cat => (
+							{['LOS', 'HOUT','SPECIAL', 'MOS','LAVA','MOSBAL','VITRO','BUNCH','TC_POT','NET','5_cm','MAT','TERRARIUM','ASSORTI','9_cm','POND','OVERIG'].map(cat => (
 								<label
 									key={cat}
 									className='inline-flex items-center cursor-pointer select-none'
