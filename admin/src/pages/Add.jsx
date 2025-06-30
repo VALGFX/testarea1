@@ -13,7 +13,7 @@ const Add = ({ token }) => {
 	const [name, setName] = useState('')
 	const [description, setDescription] = useState('')
 	const [price, setPrice] = useState('')
-	const [category, setCategory] = useState('Acquario')
+	const [category, setCategory] = useState('Aquatic plants (loose)')
 	const [subCategory, setSubCategory] = useState('Estivo')
 	const [bestseller, setBestseller] = useState(false)
 	const [sizes, setSizes] = useState([])
