@@ -148,21 +148,21 @@ const Add = ({ token }) => {
 						<option value='Aquariumplanten'>Aquariumplanten in Terra Cotta pot</option>
 						<option value='Steel'>Plants on steel net </option>
 						<option value='mat'>Plants on mat 40x60 cm</option>
-						<option value='mat'>Aquatic plants in 5 cm pot</option>
-						<option value='mat'>Terrarium</option>
-						<option value='mat'>Aquatic plants in 9 cm pot</option>
-						<option value='mat'>Anubias  P9</option>
-						<option value='mat'>Cryptocoryne  P9</option>
-						<option value='mat'>Plants on mat 40x60 cm</option>
-						<option value='mat'>Echinodorus P9</option>
-						<option value='mat'>Microsorum  p9</option>
-						<option value='mat'>Assorted plants p5</option>
-						<option value='mat'>Packages of 20 plants</option>
-						<option value='mat'>Floating plants loose</option>
-						<option value='mat'>Floating plants in cup</option>
-						<option value='mat'>Oxygen plants in cup</option>
-						<option value='mat'>Oxygen bundle plants</option>
-						<option value='mat'>Nice to have</option>
+						<option value='5'>Aquatic plants in 5 cm pot</option>
+						<option value='Terrarium'>Terrarium</option>
+						<option value='Aquatic'>Aquatic plants in 9 cm pot</option>
+						<option value='Anubias'>Anubias  P9</option>
+						<option value='Cryptocoryne'>Cryptocoryne  P9</option>
+						<option value='40x60'>Plants on mat 40x60 cm</option>
+						<option value='Echinodorus'>Echinodorus P9</option>
+						<option value='Microsorum'>Microsorum  p9</option>
+						<option value='Assorted'>Assorted plants p5</option>
+						<option value='20'>Packages of 20 plants</option>
+						<option value='loose'>Floating plants loose</option>
+						<option value='cup'>Floating plants in cup</option>
+						<option value='Oxygen'>Oxygen plants in cup</option>
+						<option value='bundle'>Oxygen bundle plants</option>
+						<option value='Nice'>Nice to have</option>
 					</select>
 				</div>
 
