@@ -6,7 +6,7 @@ import { ShopContext } from '../context/ShopContext'
 
 const Product = () => {
 	const { productId } = useParams()
-	const { products } = useContext(ShopContext)
+	const { products, currency, addToCart, isLoggedIn } = useContext(ShopContext)
 	const [productData, setProductData] = useState(null)
 	const [image, setImage] = useState('')
 
@@ -76,17 +76,30 @@ const Product = () => {
 							<span className="text-gray-500 text-sm">(122 reviews)</span>
 						</div>
 
-						{/* NO PRICE */}
+						{/* Preț și buton dacă e logat */}
+						{isLoggedIn ? (
+							<>
+								<p className="text-3xl font-semibold text-green-600 mb-6">
+									{currency}
+									{productData.price.toFixed(2)}
+								</p>
+								<button
+									onClick={() => addToCart(productData._id)}
+									className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-8 py-3 rounded-full text-base font-semibold transition duration-300 shadow-lg flex items-center justify-center gap-2"
+								>
+									🛒 Add to Cart
+								</button>
+							</>
+						) : (
+							<div className="bg-green-100 border border-green-300 text-green-800 p-4 rounded-md font-semibold text-center text-lg select-none">
+								👤 Login to see the price and buy this product
+							</div>
+						)}
 
-						{/* Description */}
-						<p className="text-gray-700 leading-relaxed mb-10 whitespace-pre-line">
+						{/* Descriere */}
+						<p className="text-gray-700 leading-relaxed mt-8 whitespace-pre-line">
 							{productData.description}
 						</p>
-					</div>
-
-					{/* Message for login */}
-					<div className="bg-green-100 border border-green-300 text-green-800 p-4 rounded-md font-semibold text-center text-lg select-none">
-						👤 Login to see the price and buy this product
 					</div>
 				</div>
 			</div>
